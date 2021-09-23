@@ -1,12 +1,31 @@
 const holder_containers = document.querySelectorAll('.holder_container');
+const add_item_buttons = document.querySelectorAll('.add_item');
 const items = document.querySelectorAll('.item');
 const set_function = (fun) => setTimeout(fun, 0);
-const item_template = document.createElement('div');
-item_template.innerHTML = 'Перетащи меня 1';
-item_template.classList.add("item");
-item_template.setAttribute('draggable', 'true');
 let item_counter = 3;
 let item_counter_max = 6;
+
+const add_item_to_container = function(container){
+    if(++item_counter > item_counter_max){
+        console.log('Upper bound of items!!!');
+        return;
+    }
+
+    const item_template = document.createElement('div');
+    item_template.innerHTML = 'Перетащи меня ' + item_counter;
+    item_template.classList.add("item");
+    item_template.setAttribute('draggable', 'true');
+    let new_item = container.appendChild(item_template);
+    new_item.addEventListener('dragstart', dragstart);
+    new_item.addEventListener('dragend', dragend);
+}
+
+for (let button of add_item_buttons){
+    console.log(button);
+    button.addEventListener('click', 
+        ()=>add_item_to_container(
+            button.parentElement.parentElement.querySelector('.holder_container')));
+}
 
 for (let item of items) {
     item.addEventListener('dragstart', dragstart);
